@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_covers_title"
+        android:key="pref_key_cover_settings">
+        <CheckBoxPreference
+            android:key="pref_autoDownloadCovers"
+            android:title="@string/pref_autoDownloadCovers"
+            android:summary="@string/pref_autoDownloadCoversSumm"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_autoDownloadCoversToMediaFolder"
+            android:title="@string/pref_downloadCoversToMediaFolder"
+            android:summary="@string/pref_downloadCoversToMediaFolderSumm"
+            android:defaultValue="true" />
+        <Preference android:title="@string/pref_retrieveCovers"
+            android:key="pref_retrieveCovers" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_statistics_title"
+        android:key="pref_key_statistics">
+        <Preference
+            android:title="@string/pref_totalLyrics"
+            android:editable="false"
+            android:key="pref_lyricsTotal"
+            android:numeric="integer"/>
+    </PreferenceCategory>
+</PreferenceScreen>
