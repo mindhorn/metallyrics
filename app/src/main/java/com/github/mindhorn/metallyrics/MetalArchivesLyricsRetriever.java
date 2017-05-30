@@ -35,7 +35,7 @@ import javax.xml.xpath.XPathFactory;
 public class MetalArchivesLyricsRetriever extends LyricsRetriever {
     final static String TAG = "MARetriever";
     
-    final String mBaseURL = "http://www.metal-archives.com/";
+    final String mBaseURL = "https://www.metal-archives.com/";
 
     public MetalArchivesLyricsRetriever(Context ctx, String bandname, String album, String song) {
         super(TAG, ctx, bandname, album, song);
@@ -60,9 +60,9 @@ public class MetalArchivesLyricsRetriever extends LyricsRetriever {
             Log.v(TAG, "Result:"+result.mResult.length());
             if ((result.status() == 404) || (result.mResult.length() == 0)) {
                 // Second chance -> try the search function
-                String search =  "/search/ajax-advanced/searching/albums/"
+                String search =  "search/ajax-advanced/searching/albums/"
                         + "?bandName=" + URLEncoder.encode(mBandname, "UTF-8") + "&"
-                        + "releaseTitle=" + URLEncoder.encode(mAlbum, "UTF-8");
+                        + "releaseTitle=" + URLEncoder.encode(mAlbum.replaceAll("[-+&:]",""), "UTF-8");
                 url = new URL(mBaseURL + search);
                 Log.v(TAG, "Second chance: "+ url.toString());
                 result = RetrieveHelper.retrieveAsString(url, null, null, mContext);
