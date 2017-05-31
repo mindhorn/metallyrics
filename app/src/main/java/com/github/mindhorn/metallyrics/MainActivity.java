@@ -113,7 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setLyrics(String lyrics) {
         final WebView wv = (WebView) findViewById(R.id.webView);
-        wv.setBackgroundColor(Color.TRANSPARENT);
+        wv.setBackgroundColor(Color.BLACK);
+        if (lyrics == null) {
+            lyrics = getString(R.string.lyrics_not_found);
+        }
         wv.loadDataWithBaseURL(null, "<body style=\"color: #fff\">" + lyrics + "</body>", "text/html", "utf-8", null);
     }
 
