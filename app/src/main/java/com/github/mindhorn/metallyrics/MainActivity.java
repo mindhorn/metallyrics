@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void setLyrics(String lyrics) {
         final WebView wv = (WebView) findViewById(R.id.webView);
-        wv.loadDataWithBaseURL(null, "<body style=\"color: #fff;background: #000\">" + lyrics + "</body>", "text/html", "utf-8", null);
+        wv.setBackgroundColor(Color.TRANSPARENT);
+        wv.loadDataWithBaseURL(null, "<body style=\"color: #fff\">" + lyrics + "</body>", "text/html", "utf-8", null);
     }
 
     public void retrieveCover(String artist, String title) {
