@@ -6,6 +6,7 @@
     <string name="button_retrieve_covers">Retrieve missing covers</string>
     <string name="title_activity_settings">Settings</string>
     <string name="lyrics_not_found">No lyrics found</string>
+    <string name="network_unavailable">Network not available</string>
     <string name="pref_autoDownloadCovers">Auto download covers</string>
     <string name="pref_autoDownloadCoversSumm">Download missing covers for album of current song</string>
     <string name="pref_downloadCoversToMediaFolder">Add to media folder</string>

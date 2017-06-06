@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,9 +88,13 @@ public class MainActivity extends AppCompatActivity {
             Log.v("LyricsCache", "Setting lyrics");
             setLyrics(lyrics.getLyrics());
         } else {
-            setLyricsPending(true);
-            setLyrics("");
-            mFrontend.retrieveLyrics(artist, album, track, false);
+            if (isNetworkAvailable()) {
+                setLyrics("");
+                setLyricsPending(true);
+                mFrontend.retrieveLyrics(artist, album, track, false);
+            } else {
+                setLyrics(getString(R.string.network_unavailable));
+            }
         }
     }
 
@@ -97,11 +103,14 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             String cmd = intent.getStringExtra("command");
-            String artist = intent.getStringExtra("artist").trim();
-            String album = intent.getStringExtra("album").trim();
-            String track = intent.getStringExtra("track").trim();
+            String artist = intent.getStringExtra("artist");
+            String album = intent.getStringExtra("album");
+            String track = intent.getStringExtra("track");
 
-            album = LyricsRetrieverFrontend.normalizeAlbum(album);
+            if (artist != null) artist = artist.trim();
+            if (album  != null) album  = LyricsRetrieverFrontend.normalizeAlbum(album);
+            if (track  != null) track  = track.trim();
+
             mCurrentArtist = artist;
             mCurrentAlbum = album;
             mCurrentTrack = track;
@@ -141,7 +150,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         boolean retrieveCovers = sharedPref.getBoolean(SettingsActivity.KEY_PREF_AUTORETRIEVE_COVERS, false);
         if (retrieveCovers) {
-            retrieveCover(res.getArtist(), res.getAlbum());
+            if (isNetworkAvailable()) {
+                retrieveCover(res.getArtist(), res.getAlbum());
+            } else {
+                Log.v("CoverRetriever", "No network connection available");
+            }
         } else {
             Log.v("CoverRetriever", "Cover retrieval disabled");
         }
@@ -150,6 +163,12 @@ public class MainActivity extends AppCompatActivity {
     public void setDetails(String artist, String album, String song) {
         final TextView artistname = (TextView) findViewById(R.id.artistname);
         artistname.setText(artist + " - " + song);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = conMan.getActiveNetworkInfo();
+        return ni != null && ni.isConnected();
     }
 
     private ColorStateList TextColors = null;
