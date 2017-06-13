@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.Normalizer;
 
 /**
  * Created on 11.02.17.
@@ -28,7 +29,7 @@ public class MetroLyricsRetriever extends LyricsRetriever {
         RetrieveResult res = new RetrieveResult(this, mBandname, mAlbum, mSong);
         try {
             String bandname = URLEncoder.encode(mBandname.replace(" ", "-").toLowerCase(), "UTF-8");
-            String songname = URLEncoder.encode(mSong.replace(" ", "-").toLowerCase(), "UTF-8");
+            String songname = URLEncoder.encode(Normalizer.normalize(mSong, Normalizer.Form.NFKD).replace(" ", "-").toLowerCase(), "UTF-8");
             url = new URL(mBaseURL + songname + "-lyrics-" + bandname + ".html");
         } catch (MalformedURLException e) {
             Log.v(TAG, "Malformed url 1" + e.toString());
